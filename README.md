@@ -439,3 +439,4 @@ Everyone on [this list](https://github.com/crowdint/rails3-jquery-autocomplete/c
 We specialize in building and growing online retail stores. We don’t work with everyone – just companies we believe in. Call us today to see if there’s a fit.
 Find more info [here](http://www.crowdint.com)!
 
+
