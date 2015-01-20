@@ -1,52 +1,17 @@
 ## Status
 
-As you may have noticed we are working through the backlog of issues and pull requests
-and trying to get those caught up.  Couple of quick notes related to this.
-
-1. A new gem with Rails 4 support HAS BEEN recently RELEASED (1.0.12).
-2. If there is a specific feature that is in master, but not in the gem I strongly suggest you
-   point to the specific changeset that addresses your issue rather than directly at master. There
-   are going to be a lot of changes going on here and while we will do our best; there will probably
-   be some breakage on master in the short term.  Use at your discretion!
-3. Some pull requests have been submitted to address the same functionality; in those cases we will try
-   to pick the best/optimal solution, accept that and close out the other tickets.
-4. Backwards compatibility is considered a high priority, so if a pull request is a great idea,
-   but it breaks backwards compatibility, it will be closed and noted that it causes breakage
-   to backwards compatibility.  If anyone passionately wants the feature they are welcome to update
-   in a way that maintiains backwards compatibility and issue new pull reqs.
-5. Performance is critical.  If a feature is a nice to have, but has been implemented in such a way that it causes
-   performance degradation to existing searches; it will be rejected.
-6. Thanks to everyone who is submitting pull requests, issues, comments, etc... I appreciate the help
-   from each one of you.  Sometimes it has to get worse before it gets better.  But I promise,
-   it will get better!
-
--------
-
-Thanks to David @ crowdint for creating this gem and all of his hard
-work on it in the past.
-
-Just posting this update to let everyone know this project is still
-alive and has a new maintainer.  Over the next couple of weeks we will
-be reviewing existing pull requests and you will see updates shortly.
-
-Thanks for your patience.
-
-joiey-seeley@uiowa.edu
-
--------
-
-Unfortunately, I don't have much time to work on this gem, I'm looking for
-someone to help with its maintenance. Send me an email if you are interested in
-getting push privileges to this repo.
-
-david@crowdint.com
-
+1. This is the officially maintained fork of
+   [rails3-jquery-autocomplete](http://github.com/crowdint/rails3-jquery-autocomplete)
+2. All new features and support of Rails 4 and above will occur here
+   going forward.  If you are still using Rails 3 please continue to use
+the previous fork.  No new features will be added there, but bug fixes &
+security patches will continue until Rails 3 is EOL.
 
 # rails-jquery-autocomplete
 
-[![Build Status](https://secure.travis-ci.org/crowdint/rails3-jquery-autocomplete.png)](http://travis-ci.org/crowdint/rails3-jquery-autocomplete) [![Gem Version](https://badge.fury.io/rb/rails3-jquery-autocomplete.png)](http://badge.fury.io/rb/rails3-jquery-autocomplete)
+[![Build Status](https://secure.travis-ci.org/bigtunacan/rails-jquery-autocomplete.png)](http://travis-ci.org/bigtunacan/rails-jquery-autocomplete) [![Gem Version](https://badge.fury.io/rb/rails-jquery-autocomplete.png)](http://badge.fury.io/rb/rails-jquery-autocomplete)
 
-An easy way to use jQuery's autocomplete with Rails 3.
+An easy way to use jQuery's autocomplete with Rails.
 
 Supports both ActiveRecord, [mongoid](http://github.com/mongoid/mongoid), and [MongoMapper](https://github.com/jnunemaker/mongomapper).
 
@@ -86,7 +51,7 @@ Install it
 
     bundle install
 
-### Rails 3.0.x
+### Rails 4.x.x
 
 Run the generator
 
@@ -111,7 +76,7 @@ uncompressed version by running:
 
     rails generate autocomplete:uncompressed
 
-### Rails 3.1.x and higher
+### Rails 4 and higher
 
 Just add it to your app/assets/javascripts/application.js file
 
@@ -273,7 +238,7 @@ To have the first item be automatically focused on when the autocomplete menu is
 		'data-auto-focus' => true
 	end
 
-Now your autocomplete code is unobtrusive, Rails 3 style.
+Now your autocomplete code is unobtrusive, Rails style.
 
 ### Getting the object id
 
