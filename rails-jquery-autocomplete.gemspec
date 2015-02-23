@@ -13,12 +13,11 @@ Gem::Specification.new do |s|
   s.description = %q{Use jQuery's autocomplete plugin with Rails 4+.}
   s.license = %q{MIT}
 
-  s.add_dependency('rails', '>= 4.0')
+  s.add_dependency('rails', '>= 3.2')
 
   s.add_development_dependency 'sqlite3-ruby'
   s.add_development_dependency 'mongoid',      '>= 2.0.0'
   s.add_development_dependency 'mongo_mapper', '>= 0.13'
-  s.add_development_dependency 'mongo',        '~> 1.6.2'
   s.add_development_dependency 'bson_ext',     '~> 1.6.2'
   s.add_development_dependency 'guard'
   s.add_development_dependency 'guard-test'
