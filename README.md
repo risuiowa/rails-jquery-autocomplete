@@ -240,6 +240,22 @@ To have the first item be automatically focused on when the autocomplete menu is
 
 Now your autocomplete code is unobtrusive, Rails style.
 
+#### Client-side config
+
+To configure the behaviour if no matches are found, you can set the following options:
+
+    jQuery.railsAutocomplete.options.showNoMatches //default true
+    jQuery.railsAutocomplete.options.noMatchesLabel //default 'no existing match'
+
+These will change the behaviour globally. To set them on a single input field use:
+
+    f.autocomplete_field :brand_names, autocomplete_brand_name_products_path, 
+    'data-showNoMatches' => false
+    #or
+    f.autocomplete_field :brand_names, autocomplete_brand_name_products_path, 
+    'data-noMatchesLabel' => 'no brands found'
+
+
 ### Getting the object id
 
 If you need to use the id of the selected object, you can use the *id_element* attribute too:
