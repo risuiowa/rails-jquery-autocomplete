@@ -17,14 +17,6 @@ module SimpleForm
     class AutocompleteInput < Base
       include Autocomplete
 
-      def input
-        @builder.autocomplete_field(
-          attribute_name,
-          options[:url],
-          rewrite_autocomplete_option
-        )
-      end
-
       protected
       def limit
         column && column.limit
@@ -33,12 +25,29 @@ module SimpleForm
       def has_placeholder?
         placeholder_present?
       end
+
+      def input(args = nil)
+        # This branching is to deal with a change beginning in simple_form 3.0.2 and above to ensure backwards compatibility
+        if args.nil?
+          @builder.autocomplete_field(
+            attribute_name,
+            options[:url],
+            rewrite_autocomplete_option
+          )
+        else
+          @builder.autocomplete_field(
+            attribute_name,
+            options[:url],
+            merge_wrapper_options(rewrite_autocomplete_option, args)
+          )
+        end
+      end
     end
 
     class AutocompleteCollectionInput < CollectionInput
       include Autocomplete
 
-      def input
+      def input(opts)
         # http://www.codeofficer.com/blog/entry/form_builders_in_rails_discovering_field_names_and_ids_for_javascript/
         hidden_id = "#{object_name}_#{attribute_name}_hidden".gsub(/\]\[|[^-a-zA-Z0-9:.]/, "_").sub(/_$/, "")
         id_element = options[:id_element]
@@ -48,8 +57,14 @@ module SimpleForm
           id_element = "#" + hidden_id
         end
         options[:id_element] = id_element
-        autocomplete_options = rewrite_autocomplete_option
-        #
+
+        # This branching is to deal with a change beginning in simple_form 3.0.2 and above to ensure backwards compatibility
+        if opts.nil?
+          autocomplete_options = rewrite_autocomplete_option
+        else
+          merge_wrapper_options(rewrite_autocomplete_option, args)
+        end
+
         label_method, value_method = detect_collection_methods
         association = object.send(reflection.name)
         if association && association.respond_to?(label_method)
