@@ -51,7 +51,7 @@ Install it
 
     bundle install
 
-### Rails 4.x.x
+### Rails < 4.x.x
 
 Run the generator
 
@@ -87,9 +87,27 @@ Just add it to your app/assets/javascripts/application.js file
 
 ## Usage
 
+### Demo Application by [Yifei](https://github.com/yifeiwu)
+
+A live demo can be seen 
+
+[here](https://rocky-thicket-9286.herokuapp.com/)
+
+[source](https://github.com/yifeiwu/rails4-autocomplete-demo)
+
+As a new developer, I had some issues getting this to work by following the documentation. However after trying some things and reading [Yoni Weisbrod](http://www.yoniweisbrod.com/autocomplete-magic-with-rails/)'s blog post, I was able to make the autocomplete work and implement a few useful features. 
+
+##Some implemented features
+
+1. The css has been changed such that the results show up better against the box of suggestions. See  `<app/assets/stylesheets/food.scss>` for details. I obtained this from a gist(forgive me I don't remember who the author is at the moment, please contact me if you do and I'll give credit). Upon mouseover/arrowkey presses, the selection will be highlighted. 
+
+2. One Yoni's improvements, you can click on a suggested item to submit the search, instead of having to click on the submit button after clicking on the item. This is an example of how to hook onto the *railsAutocomplete.select* event. 
+
+3. The autocomplete is implemented in the context of a search form with a simple scope search(see the food model and controller). 
+
 ### Model Example
 
-Assuming you have a Brand model:
+Assuming you have a Brand model that contains a name attribute:
 
     class Brand < ActiveRecord::Base
     end
@@ -112,6 +130,8 @@ This will create an action _autocomplete_brand_name_ on your controller, don't f
     resources :products do
       get :autocomplete_brand_name, :on => :collection
     end
+    
+Verify this path using `rake routes`, you will need it later for the **view** section.
 
 ### Options
 
