@@ -1,5 +1,18 @@
 # Changelog
 
+* 1.0.2
+  * Fixes compatibility with newer versions of Simple Form gem
+  * Fixes issue of not propagating events and issue of selected value not a string
+* 1.0.1
+  * Option to enable/disable no matches found labeling
+* 1.0.0
+  * Adds support for Rails 4
+  
+___
+
+Changes from here on are for the rails3-jquery-autocomplete gem release versions
+
+
 * 1.0.11
   * mongoid: escape regular expression in search
   * When possible, use jQuery .on() rather than .live()
