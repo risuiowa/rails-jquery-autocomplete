@@ -3,6 +3,8 @@
 * 1.0.2
   * Fixes compatibility with newer versions of Simple Form gem
   * Fixes issue of not propagating events and issue of selected value not a string
+  * Fixes bug where form 'false' values are treated as true due to being
+    a string value.
 * 1.0.1
   * Option to enable/disable no matches found labeling
 * 1.0.0
