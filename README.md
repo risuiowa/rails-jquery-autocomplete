@@ -89,21 +89,21 @@ Just add it to your app/assets/javascripts/application.js file
 
 ### Demo Application by [Yifei](https://github.com/yifeiwu)
 
-A live demo can be seen 
+A live demo can be seen
 
 [here](https://rocky-thicket-9286.herokuapp.com/)
 
 [source](https://github.com/yifeiwu/rails4-autocomplete-demo)
 
-As a new developer, I had some issues getting this to work by following the documentation. However after trying some things and reading [Yoni Weisbrod](http://www.yoniweisbrod.com/autocomplete-magic-with-rails/)'s blog post, I was able to make the autocomplete work and implement a few useful features. 
+As a new developer, I had some issues getting this to work by following the documentation. However after trying some things and reading [Yoni Weisbrod](http://www.yoniweisbrod.com/autocomplete-magic-with-rails/)'s blog post, I was able to make the autocomplete work and implement a few useful features.
 
 ##Some implemented features
 
-1. The css has been changed such that the results show up better against the box of suggestions. See  `<app/assets/stylesheets/food.scss>` for details. I obtained this from a gist(forgive me I don't remember who the author is at the moment, please contact me if you do and I'll give credit). Upon mouseover/arrowkey presses, the selection will be highlighted. 
+1. The css has been changed such that the results show up better against the box of suggestions. See  `<app/assets/stylesheets/food.scss>` for details. I obtained this from a gist(forgive me I don't remember who the author is at the moment, please contact me if you do and I'll give credit). Upon mouseover/arrowkey presses, the selection will be highlighted.
 
-2. One Yoni's improvements, you can click on a suggested item to submit the search, instead of having to click on the submit button after clicking on the item. This is an example of how to hook onto the *railsAutocomplete.select* event. 
+2. One Yoni's improvements, you can click on a suggested item to submit the search, instead of having to click on the submit button after clicking on the item. This is an example of how to hook onto the *railsAutocomplete.select* event.
 
-3. The autocomplete is implemented in the context of a search form with a simple scope search(see the food model and controller). 
+3. The autocomplete is implemented in the context of a search form with a simple scope search(see the food model and controller).
 
 ### Model Example
 
@@ -130,7 +130,7 @@ This will create an action _autocomplete_brand_name_ on your controller, don't f
     resources :products do
       get :autocomplete_brand_name, :on => :collection
     end
-    
+
 Verify this path using `rake routes`, you will need it later for the **view** section.
 
 ### Options
@@ -194,27 +194,30 @@ Only the object's id and the column you are searching on will be returned in JSO
 
 #### :hstore
 
-  Added option to support searching in hstore columns.
+Added option to support searching in hstore columns.
 
-  Pass a hash with two keys: `:method` and `:key` with values: the hstore field name and the key of the hstore to search.
+Pass a hash with two keys: `:method` and `:key` with values: the hstore field name and the key of the hstore to search.
 
-  e.g `autocomplete :feature, :name, :hstore => {:method => 'name_translations', :key => 'en'}`
+e.g `autocomplete :feature, :name, :hstore => {:method => 'name_translations', :key => 'en'}`
 
 
 #### :scopes
-  Added option to use scopes. Pass scopes in an array.
-  e.g `:scopes => [:scope1, :scope2]`
+
+Added option to use scopes. Pass scopes in an array.
+e.g `:scopes => [:scope1, :scope2]`
 
 #### :column_name
-   By default autocomplete uses method name as column name. Now it can be specified using column_name options
-   `:column_name => 'name'`
+
+By default autocomplete uses method name as column name. Now it can be specified using column_name options
+`:column_name => 'name'`
 
 #### json encoder
+
 Autocomplete uses Yajl as JSON encoder/decoder, but you can specify your own
 
     class ProductsController < Admin::BaseController
       autocomplete :brand, :name do |items|
-         CustomJSON::Encoder.encode(items)
+        CustomJSON::Encoder.encode(items)
       end
     end
 
@@ -253,10 +256,10 @@ NOTE: Setting the `:multiple` option to `true` will result in the chosen values 
 
 To have the first item be automatically focused on when the autocomplete menu is shown, add the `'data-auto-focus'` option and set it to `true`.
 
-	form_for @product do |f|
-		f.autocomplete_field :brand_names, autocomplete_brand_name_products_path,
-		'data-auto-focus' => true
-	end
+    form_for @product do |f|
+      f.autocomplete_field :brand_names, autocomplete_brand_name_products_path,
+      'data-auto-focus' => true
+    end
 
 Now your autocomplete code is unobtrusive, Rails style.
 
@@ -269,10 +272,10 @@ To configure the behaviour if no matches are found, you can set the following op
 
 These will change the behaviour globally. To set them on a single input field use:
 
-    f.autocomplete_field :brand_names, autocomplete_brand_name_products_path, 
+    f.autocomplete_field :brand_names, autocomplete_brand_name_products_path,
     'data-showNoMatches' => false
     #or
-    f.autocomplete_field :brand_names, autocomplete_brand_name_products_path, 
+    f.autocomplete_field :brand_names, autocomplete_brand_name_products_path,
     'data-noMatchesLabel' => 'no brands found'
 
 
@@ -468,11 +471,4 @@ the future. Thanks!
 # Thanks to
 
 Everyone on [this list](https://github.com/crowdint/rails3-jquery-autocomplete/contributors)
-
-# About the Author
-
-[Crowd Interactive](http://www.crowdint.com) is an American web design and development company that happens to work in Colima, Mexico.
-We specialize in building and growing online retail stores. We don’t work with everyone – just companies we believe in. Call us today to see if there’s a fit.
-Find more info [here](http://www.crowdint.com)!
-
 

@@ -7,7 +7,7 @@ Gem::Specification.new do |s|
   s.version = RailsJQueryAutocomplete::VERSION
   s.platform = Gem::Platform::RUBY
   s.authors = ["David Padilla", "Joiey Seeley", "Sundus Yousuf"]
-  s.email = %q{david.padilla@crowdint.com joiey.seeley@gmail.com sundusahmedyousuf@gmail.com}
+  s.email = %q{david@padilla.cc joiey.seeley@gmail.com sundusahmedyousuf@gmail.com}
   s.homepage = %q{https://github.com/bigtunacan/rails-jquery-autocomplete/}
   s.summary = %q{Use jQuery's autocomplete plugin with Rails 4+.}
   s.description = %q{Use jQuery's autocomplete plugin with Rails 4+.}
