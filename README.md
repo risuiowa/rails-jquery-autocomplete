@@ -3,9 +3,7 @@
 1. This is the officially maintained fork of
    [rails3-jquery-autocomplete](http://github.com/crowdint/rails3-jquery-autocomplete)
 2. All new features and support of Rails 4 and above will occur here
-   going forward.  If you are still using Rails 3 please continue to use
-the previous fork.  No new features will be added there, but bug fixes &
-security patches will continue until Rails 3 is EOL.
+   going forward.  Rails 3 is also supported on this fork; bug fixes and security fixes for Rails 3 will continue until Rails 3 is EOL.
 
 # rails-jquery-autocomplete
 
