@@ -5,7 +5,11 @@ module RailsJQueryAutocomplete
         order = options[:order]
 
         table_prefix = model ? "#{model.table_name}." : ""
-        order || "LOWER(#{table_prefix}#{method}) ASC"
+        if sqlite?
+          order || "LOWER(#{method}) ASC"
+        else
+          order || "LOWER(#{table_prefix}#{method}) ASC"
+        end
       end
 
       def active_record_get_autocomplete_items(parameters)
@@ -17,7 +21,6 @@ module RailsJQueryAutocomplete
         where   = options[:where]
         limit   = get_autocomplete_limit(options)
         order   = active_record_get_autocomplete_order(method, options, model)
-
 
         items = (::Rails::VERSION::MAJOR * 10 + ::Rails::VERSION::MINOR) >= 40 ? model.where(nil) : model.scoped
 
@@ -32,8 +35,16 @@ module RailsJQueryAutocomplete
       end
 
       def get_autocomplete_select_clause(model, method, options)
-        table_name = model.table_name
-        (["#{table_name}.#{model.primary_key}", "#{table_name}.#{method}"] + (options[:extra_data].blank? ? [] : options[:extra_data]))
+        if sqlite?
+          table_name = model.quoted_table_name
+          ([
+              "#{table_name}.#{model.connection.quote_column_name(model.primary_key)} as #{model.primary_key}",
+              "#{table_name}.#{model.connection.quote_column_name(method)} as #{method}"
+            ] + (options[:extra_data].blank? ? [] : options[:extra_data]))
+        else
+          table_name = model.table_name
+          (["#{table_name}.#{model.primary_key}", "#{table_name}.#{method}"] + (options[:extra_data].blank? ? [] : options[:extra_data]))
+        end
       end
 
       def get_autocomplete_where_clause(model, term, method, options)
@@ -42,15 +53,28 @@ module RailsJQueryAutocomplete
         like_clause = (postgres?(model) ? 'ILIKE' : 'LIKE')
         if options[:hstore]
           ["LOWER(#{table_name}.#{method} -> '#{options[:hstore][:key]}') LIKE ?", "#{(is_full_search ? '%' : '')}#{term.downcase}%"]
+        elsif sqlite?
+          ["LOWER(#{method}) #{like_clause} ?", "#{(is_full_search ? '%' : '')}#{term.downcase}%"]
         else
           ["LOWER(#{table_name}.#{method}) #{like_clause} ?", "#{(is_full_search ? '%' : '')}#{term.downcase}%"]
         end
       end
 
-      def postgres?(model)
-        # Figure out if this particular model uses the PostgreSQL adapter
-        model.connection.class.to_s.match(/PostgreSQLAdapter/)
-      end
+      protected
+
+        def sqlite?
+          begin
+            return ::ActiveRecord::Base.connection.to_s.match(/SQLite/)
+          rescue ::ActiveRecord::ConnectionNotEstablished
+            return false
+          end
+          return false
+        end
+
+        def postgres?(model)
+          # Figure out if this particular model uses the PostgreSQL adapter
+          model.connection.class.to_s.match(/PostgreSQLAdapter/)
+        end
     end
   end
 end
