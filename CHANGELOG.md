@@ -1,5 +1,8 @@
 # Changelog
 
+* 1.0.4
+  * Add data-min-length attribute (alias to min-length attribute) for better consistency.
+  * Added railsAutocomplete.init trigger
 * 1.0.3
   * Fixes issue with SQLITE to support schemas
 * 1.0.2
