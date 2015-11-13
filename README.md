@@ -11,7 +11,7 @@
 
 An easy way to use jQuery's autocomplete with Rails.
 
-Supports both ActiveRecord, [mongoid](http://github.com/mongoid/mongoid), and [MongoMapper](https://github.com/jnunemaker/mongomapper).
+Supports both ActiveRecord, [mongoid](https://github.com/mongodb/mongoid), and [MongoMapper](https://github.com/jnunemaker/mongomapper).
 
 Works with [Formtastic](http://github.com/justinfrench/formtastic)
 and [SimpleForm](https://github.com/plataformatec/simple_form)
