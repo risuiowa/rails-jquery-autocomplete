@@ -209,6 +209,11 @@ e.g `:scopes => [:scope1, :scope2]`
 By default autocomplete uses method name as column name. Now it can be specified using column_name options
 `:column_name => 'name'`
 
+#### :case_sensitive
+
+Normally autocomplete performs a case insentive search. In cases where this is not desirable, or causes too high
+a performance penalty, search can be made case sensitive by specifying `:case_sensitive => true`
+
 #### json encoder
 
 Autocomplete uses Yajl as JSON encoder/decoder, but you can specify your own

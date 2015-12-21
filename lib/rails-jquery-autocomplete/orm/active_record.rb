@@ -50,13 +50,15 @@ module RailsJQueryAutocomplete
       def get_autocomplete_where_clause(model, term, method, options)
         table_name = model.table_name
         is_full_search = options[:full]
-        like_clause = (postgres?(model) ? 'ILIKE' : 'LIKE')
+        is_case_sensitive_search = options[:case_sensitive]
+        like_clause = (postgres?(model) && !is_case_sensitive_search ? 'ILIKE' : 'LIKE')
+        column_transform = is_case_sensitive_search ? '' : 'LOWER'
         if options[:hstore]
-          ["LOWER(#{table_name}.#{method} -> '#{options[:hstore][:key]}') LIKE ?", "#{(is_full_search ? '%' : '')}#{term.downcase}%"]
+          ["#{column_transform}(#{table_name}.#{method} -> '#{options[:hstore][:key]}') LIKE #{column_transform}(?)", "#{(is_full_search ? '%' : '')}#{term}%"]
         elsif sqlite?
-          ["LOWER(#{method}) #{like_clause} ?", "#{(is_full_search ? '%' : '')}#{term.downcase}%"]
+          ["#{column_transform}(#{method}) #{like_clause} #{column_transform}(?)", "#{(is_full_search ? '%' : '')}#{term}%"]
         else
-          ["LOWER(#{table_name}.#{method}) #{like_clause} ?", "#{(is_full_search ? '%' : '')}#{term.downcase}%"]
+          ["#{column_transform}(#{table_name}.#{method}) #{like_clause} #{column_transform}(?)", "#{(is_full_search ? '%' : '')}#{term}%"]
         end
       end
 

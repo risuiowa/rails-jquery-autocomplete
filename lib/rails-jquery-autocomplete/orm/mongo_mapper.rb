@@ -18,12 +18,14 @@ module RailsJQueryAutocomplete
         method         = parameters[:method]
         options        = parameters[:options]
         is_full_search = options[:full]
+        is_case_sensitive_search = options[:case_sensitive]
         term           = parameters[:term]
         limit          = get_autocomplete_limit(options)
         order          = mongo_mapper_get_autocomplete_order(method, options)
 
         search = (is_full_search ? '.*' : '^') + term + '.*'
-				items  = model.where(method.to_sym => /#{search}/i).limit(limit).sort(order)
+        search = Regexp.new(search, !is_case_sensitive_search)
+				items  = model.where(method.to_sym => search).limit(limit).sort(order)
 			end
 		end
 	end

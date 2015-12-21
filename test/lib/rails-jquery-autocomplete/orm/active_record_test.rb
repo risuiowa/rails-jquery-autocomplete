@@ -130,14 +130,14 @@ module RailsJQueryAutocomplete
         context 'Not Postgres' do
           should 'return options for where' do
             mock(self).postgres?(@model) { false }
-            assert_equal ["LOWER(table_name.method) LIKE ?", "query%"], get_autocomplete_where_clause(@model, @term, @method, @options)
+            assert_equal ["LOWER(table_name.method) LIKE LOWER(?)", "query%"], get_autocomplete_where_clause(@model, @term, @method, @options)
           end
         end
 
         context 'Postgres' do
           should 'return options for where with ILIKE' do
             mock(self).postgres?(@model) { true }
-            assert_equal ["LOWER(table_name.method) ILIKE ?", "query%"], get_autocomplete_where_clause(@model, @term, @method, @options)
+            assert_equal ["LOWER(table_name.method) ILIKE LOWER(?)", "query%"], get_autocomplete_where_clause(@model, @term, @method, @options)
           end
         end
 
@@ -146,7 +146,7 @@ module RailsJQueryAutocomplete
             mock(self).postgres?(@model) { true }
             @options[:hstore] = {method: :hsmethod, key: :hskey}
             @method = :hsmethod
-            assert_equal ["LOWER(table_name.hsmethod -> 'hskey') LIKE ?", "query%"], get_autocomplete_where_clause(@model, @term, @method, @options)
+            assert_equal ["LOWER(table_name.hsmethod -> 'hskey') LIKE LOWER(?)", "query%"], get_autocomplete_where_clause(@model, @term, @method, @options)
           end
         end
 
@@ -154,7 +154,7 @@ module RailsJQueryAutocomplete
           should 'return options for where with the term sourrounded by %%' do
             mock(self).postgres?(@model) { false }
             @options[:full] = true
-            assert_equal ["LOWER(table_name.method) LIKE ?", "%query%"], get_autocomplete_where_clause(@model, @term, @method, @options)
+            assert_equal ["LOWER(table_name.method) LIKE LOWER(?)", "%query%"], get_autocomplete_where_clause(@model, @term, @method, @options)
           end
         end
       end

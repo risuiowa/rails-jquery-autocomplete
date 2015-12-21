@@ -18,6 +18,7 @@ module RailsJQueryAutocomplete
         method         = parameters[:method]
         options        = parameters[:options]
         is_full_search = options[:full]
+        is_case_sensitive_search = options[:case_sensitive]
         term           = parameters[:term]
         limit          = get_autocomplete_limit(options)
         order          = mongoid_get_autocomplete_order(method, options)
@@ -27,7 +28,8 @@ module RailsJQueryAutocomplete
         else
           search = '^' + Regexp.escape(term)
         end
-        items  = model.where(method.to_sym => /#{search}/i).limit(limit).order_by(order)
+        search = Regexp.new(search, !is_case_sensitive_search)
+        items  = model.where(method.to_sym => search).limit(limit).order_by(order)
       end
     end
   end
