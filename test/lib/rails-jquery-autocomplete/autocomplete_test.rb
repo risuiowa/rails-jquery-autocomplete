@@ -62,6 +62,17 @@ module RailsJQueryAutocomplete
         assert_equal response["label"], "Object Name"
       end
 
+      should 'return an instance of HashWithIndifferentAccess' do
+        item = mock(Object)
+        mock(item).send(:name).times(2) { 'Object Name' }
+        mock(item).id { 1 }
+        items    = [item]
+        response = self.json_for_autocomplete(items, :name).first
+        assert_equal response.is_a?(HashWithIndifferentAccess), true
+        assert_equal response["id"], "1"
+        assert_equal response[:id], "1"
+      end
+
       context 'with extra data' do
         should 'add that extra data to result' do
           item = mock(Object)
