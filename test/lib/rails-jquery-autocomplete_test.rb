@@ -25,7 +25,7 @@ module RailsJQueryAutocomplete
         ) { @items }
 
         mock(@controller).json_for_autocomplete(@items, :name, nil)
-        get :autocomplete_movie_name, :term => 'query'
+        get :autocomplete_name, :term => 'query'
       end
 
       context 'no term is specified' do
