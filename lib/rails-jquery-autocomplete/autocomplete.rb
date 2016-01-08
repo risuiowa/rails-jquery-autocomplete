@@ -72,7 +72,7 @@ module RailsJQueryAutocomplete
 			  #both object and method can be specified by object or id
 			  items += get_autocomplete_items(:model => get_object(object), \
 			  :options => options, :term => term, :method => method)
-			end			  
+			end
 		  end
 
           render :json => json_for_autocomplete(items, options[:display_value] ||= method, options[:extra_data], &block), root: false
