@@ -60,8 +60,8 @@ module RailsJQueryAutocomplete
         #Pass parameters as autocomplete {:object => :method, "class_name" => "column_id",
         # :object => "column_id", "class_name" => :method}
         define_method("autocomplete_#{object_method_hash}") do
-
-          items = {}
+          
+          json = {}
 
           term = params[:term]
 
