@@ -53,8 +53,8 @@ module RailsJQueryAutocomplete
           method("#{get_prefix(get_object(object))}_get_autocomplete_order").call(method, options, model)
         end
 
-        define_method("get_autocomplete_items") do |object, parameters|
-          method("#{get_prefix(get_object(object))}_get_autocomplete_items").call(parameters)
+        define_method("get_autocomplete_items") do |parameters|
+          method("#{get_prefix(parameters[:model])}_get_autocomplete_items").call(parameters)
         end
 
         # var = {:object => :method, "class_name" => "column_id", \
@@ -73,7 +73,6 @@ module RailsJQueryAutocomplete
               # allow specifying fully qualified class name for model object
               # both object and method can be specified by object or id
               items = get_autocomplete_items(
-                  object,
                   :model   => get_object(object),
                   :options => options,
                   :term    => term,
