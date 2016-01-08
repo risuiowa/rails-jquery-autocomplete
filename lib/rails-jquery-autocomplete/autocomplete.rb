@@ -72,8 +72,13 @@ module RailsJQueryAutocomplete
             object_method_hash.each do |object, method|
               # allow specifying fully qualified class name for model object
               # both object and method can be specified by object or id
-              items = get_autocomplete_items(object, :model => get_object(object), \
-                :options => options, :term => term, :method => method)
+              items = get_autocomplete_items(
+                  object,
+                  :model   => get_object(object),
+                  :options => options,
+                  :term    => term,
+                  :method  => method
+              )
               json += json_for_autocomplete(items, \
                 options[:display_value] ||= method, options[:extra_data], &block)
             end
