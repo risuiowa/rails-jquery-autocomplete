@@ -61,7 +61,7 @@ module RailsJQueryAutocomplete
         # :object => "column_id", "class_name" => :method}
         define_method("autocomplete_#{name}") do
 
-          json = ""
+          json = Array.new
 
           term = params[:term]
 
