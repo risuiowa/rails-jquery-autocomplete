@@ -38,7 +38,7 @@ module RailsJQueryAutocomplete
     # end
     #
     module ClassMethods
-      def autocomplete(object, method, options = {}, &block)
+      def autocomplete(name, object_method_hash, options = {}, &block)
 
         define_method("get_prefix") do |model|
           if defined?(Mongoid::Document) && model.include?(Mongoid::Document)
@@ -49,30 +49,42 @@ module RailsJQueryAutocomplete
             'active_record'
           end
         end
-        define_method("get_autocomplete_order") do |method, options, model=nil|
-          method("#{get_prefix(get_object(options[:class_name] || object))}_get_autocomplete_order").call(method, options, model)
+        define_method("get_autocomplete_order") do |object, method, options, model=nil|
+          method("#{get_prefix(get_object(object))}_get_autocomplete_order").call(method, options, model)
         end
 
         define_method("get_autocomplete_items") do |parameters|
-          method("#{get_prefix(get_object(options[:class_name] || object))}_get_autocomplete_items").call(parameters)
+          method("#{get_prefix(parameters[:model])}_get_autocomplete_items").call(parameters)
         end
 
-        define_method("autocomplete_#{object}_#{method}") do
+        # var = {:object => :method, "class_name" => "column_id", \
+        # :object => "column_id", "class_name" => :method}
+        # #Pass parameters as autocomplete :name, var
+        # :name creates the name of the action
+        define_method("autocomplete_#{name}") do
 
-          method = options[:column_name] if options.has_key?(:column_name)
+          json = Array.new
 
           term = params[:term]
 
           if term && !term.blank?
-            #allow specifying fully qualified class name for model object
-            class_name = options[:class_name] || object
-            items = get_autocomplete_items(:model => get_object(class_name), \
-              :options => options, :term => term, :method => method)
-          else
-            items = {}
+
+            object_method_hash.each do |object, method|
+              # allow specifying fully qualified class name for model object
+              # both object and method can be specified by object or id
+              items = get_autocomplete_items(
+                  :model   => get_object(object),
+                  :options => options,
+                  :term    => term,
+                  :method  => method
+              )
+              new_json = json_for_autocomplete(items, \
+                options[:display_value] ||= method, options[:extra_data], &block)
+              json += new_json unless new_json.nil?
+            end
           end
 
-          render :json => json_for_autocomplete(items, options[:display_value] ||= method, options[:extra_data], &block), root: false
+          render :json => json, root: false
         end
       end
     end
@@ -98,7 +110,7 @@ module RailsJQueryAutocomplete
     #
     def json_for_autocomplete(items, method, extra_data=[])
       items = items.collect do |item|
-        hash = {"id" => item.id.to_s, "label" => item.send(method), "value" => item.send(method)}
+        hash = { "id" => item.id.to_s, "label" => item.send(method), "value" => item.send(method) }
         extra_data.each do |datum|
           hash[datum] = item.send(datum)
         end if extra_data
