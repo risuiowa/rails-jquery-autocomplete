@@ -67,7 +67,7 @@ module RailsJQueryAutocomplete
 
           if term && !term.blank?
 
-            object_method_hash.to_s.each do |object, method|
+            object_method_hash.each do |object, method|
               #allow specifying fully qualified class name for model object
               #both object and method can be specified by object or id
               items = get_autocomplete_items(:model => get_object(object), \
