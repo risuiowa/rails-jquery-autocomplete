@@ -57,23 +57,23 @@ module RailsJQueryAutocomplete
           method("#{get_prefix(get_object(options[:class_name] || object))}_get_autocomplete_items").call(parameters)
         end
 
-		#Pass parameters as autocomplete {:object => :method, "class_name" => "column_id",
-		# :object => "column_id", "class_name" => :method}
+        #Pass parameters as autocomplete {:object => :method, "class_name" => "column_id",
+        # :object => "column_id", "class_name" => :method}
         define_method("autocomplete_#{object_method_hash}") do
 
-		  items = {}
-		  
-		  term = params[:term]
+          items = {}
 
-		  if term && !term.blank?
-		  
-		    for object_method_hash.each do |object, method|
-			  #allow specifying fully qualified class name for model object
-			  #both object and method can be specified by object or id
-			  items += get_autocomplete_items(:model => get_object(object), \
-			  :options => options, :term => term, :method => method)
-			end
-		  end
+          term = params[:term]
+
+          if term && !term.blank?
+
+            object_method_hash.each do |object, method|
+              #allow specifying fully qualified class name for model object
+              #both object and method can be specified by object or id
+              items += get_autocomplete_items(:model => get_object(object), \
+			          :options => options, :term => term, :method => method)
+            end
+          end
 
           render :json => json_for_autocomplete(items, options[:display_value] ||= method, options[:extra_data], &block), root: false
         end
@@ -101,7 +101,7 @@ module RailsJQueryAutocomplete
     #
     def json_for_autocomplete(items, method, extra_data=[])
       items = items.collect do |item|
-        hash = {"id" => item.id.to_s, "label" => item.send(method), "value" => item.send(method)}
+        hash = { "id" => item.id.to_s, "label" => item.send(method), "value" => item.send(method) }
         extra_data.each do |datum|
           hash[datum] = item.send(datum)
         end if extra_data
