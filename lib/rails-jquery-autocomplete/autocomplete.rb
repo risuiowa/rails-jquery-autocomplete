@@ -49,12 +49,12 @@ module RailsJQueryAutocomplete
             'active_record'
           end
         end
-        define_method("get_autocomplete_order") do |method, options, model=nil|
-          method("#{get_prefix(get_object(options[:class_name] || object))}_get_autocomplete_order").call(method, options, model)
+        define_method("get_autocomplete_order") do |object, method, options, model=nil|
+          method("#{get_prefix(get_object(object))}_get_autocomplete_order").call(method, options, model)
         end
 
-        define_method("get_autocomplete_items") do |parameters|
-          method("#{get_prefix(get_object(options[:class_name] || object))}_get_autocomplete_items").call(parameters)
+        define_method("get_autocomplete_items") do |object, parameters|
+          method("#{get_prefix(get_object(object))}_get_autocomplete_items").call(parameters)
         end
 
         #Pass parameters as autocomplete {:object => :method, "class_name" => "column_id",
@@ -70,7 +70,7 @@ module RailsJQueryAutocomplete
             object_method_hash.each do |object, method|
               #allow specifying fully qualified class name for model object
               #both object and method can be specified by object or id
-              items = get_autocomplete_items(:model => get_object(object), \
+              items = get_autocomplete_items(object, :model => get_object(object), \
 			          :options => options, :term => term, :method => method)
               json += json_for_autocomplete(items, options[:display_value] ||= method, options[:extra_data], &block)
             end
