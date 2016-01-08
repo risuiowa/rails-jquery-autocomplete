@@ -29,7 +29,7 @@ module RailsJQueryAutocomplete
 
       context 'no term is specified' do
         should "render an empty hash" do
-          #mock(@controller).json_for_autocomplete(nil, {}, :name, nil)
+          # mock(@controller).json_for_autocomplete(nil, {}, :name, nil)
           get :autocomplete_action_name
         end
       end

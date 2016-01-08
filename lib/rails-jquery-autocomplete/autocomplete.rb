@@ -78,8 +78,9 @@ module RailsJQueryAutocomplete
                   :term    => term,
                   :method  => method
               )
-              json += json_for_autocomplete(items, \
+              new_json = json_for_autocomplete(items, \
                 options[:display_value] ||= method, options[:extra_data], &block)
+              json += new_json unless new_json.nil?
             end
           end
 
