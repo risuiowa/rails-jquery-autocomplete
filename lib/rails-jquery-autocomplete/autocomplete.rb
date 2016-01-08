@@ -38,7 +38,7 @@ module RailsJQueryAutocomplete
     # end
     #
     module ClassMethods
-      def autocomplete(object_method_hash, options = {}, &block)
+      def autocomplete(name, object_method_hash, options = {}, &block)
 
         define_method("get_prefix") do |model|
           if defined?(Mongoid::Document) && model.include?(Mongoid::Document)
@@ -59,15 +59,15 @@ module RailsJQueryAutocomplete
 
         #Pass parameters as autocomplete {:object => :method, "class_name" => "column_id",
         # :object => "column_id", "class_name" => :method}
-        define_method("autocomplete_#{object_method_hash}") do
-          
+        define_method("autocomplete_#{name}") do
+
           json = {}
 
           term = params[:term]
 
           if term && !term.blank?
 
-            object_method_hash.each do |object, method|
+            object_method_hash.to_s.each do |object, method|
               #allow specifying fully qualified class name for model object
               #both object and method can be specified by object or id
               items = get_autocomplete_items(:model => get_object(object), \
