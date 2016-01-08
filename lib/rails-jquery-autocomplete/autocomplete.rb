@@ -38,7 +38,7 @@ module RailsJQueryAutocomplete
     # end
     #
     module ClassMethods
-      def autocomplete(object, method, options = {}, &block)
+      def autocomplete(object_method_hash, options = {}, &block)
 
         define_method("get_prefix") do |model|
           if defined?(Mongoid::Document) && model.include?(Mongoid::Document)
