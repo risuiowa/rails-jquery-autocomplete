@@ -57,20 +57,23 @@ module RailsJQueryAutocomplete
           method("#{get_prefix(get_object(options[:class_name] || object))}_get_autocomplete_items").call(parameters)
         end
 
-        define_method("autocomplete_#{object}_#{method}") do
+		#Pass parameters as autocomplete {:object => :method, "class_name" => "column_id",
+		# :object => "column_id", "class_name" => :method}
+        define_method("autocomplete_#{object_method_hash}") do
 
-          method = options[:column_name] if options.has_key?(:column_name)
+		  items = {}
+		  
+		  term = params[:term]
 
-          term = params[:term]
-
-          if term && !term.blank?
-            #allow specifying fully qualified class name for model object
-            class_name = options[:class_name] || object
-            items = get_autocomplete_items(:model => get_object(class_name), \
-              :options => options, :term => term, :method => method)
-          else
-            items = {}
-          end
+		  if term && !term.blank?
+		  
+		    for object_method_hash.each do |object, method|
+			  #allow specifying fully qualified class name for model object
+			  #both object and method can be specified by object or id
+			  items += get_autocomplete_items(:model => get_object(object), \
+			  :options => options, :term => term, :method => method)
+			end			  
+		  end
 
           render :json => json_for_autocomplete(items, options[:display_value] ||= method, options[:extra_data], &block), root: false
         end
