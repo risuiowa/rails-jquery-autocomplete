@@ -149,7 +149,7 @@ The following terms would match the query 'un':
 
 #### :full => false (default behavior)
 
-Only the following terms mould match the query 'un':
+Only the following terms would match the query 'un':
 
 * Unacceptable
 
@@ -211,7 +211,7 @@ By default autocomplete uses method name as column name. Now it can be specified
 
 #### :case_sensitive
 
-Normally autocomplete performs a case insentive search. In cases where this is not desirable, or causes too high
+Normally autocomplete performs a case insensitive search. In cases where this is not desirable, or causes too high
 a performance penalty, search can be made case sensitive by specifying `:case_sensitive => true`
 
 #### json encoder
