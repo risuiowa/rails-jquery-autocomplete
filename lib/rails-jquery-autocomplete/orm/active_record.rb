@@ -36,7 +36,7 @@ module RailsJQueryAutocomplete
         items = items.where(where) unless where.blank?
         if select_method == :pluck
           columns = get_autocomplete_select_clause(model, method, options)
-          items = items.pluck(*columns) unless options[:full_model]
+          items = items.pluck(*columns)
           columns = columns.map{|column| column.sub(/^#{model.table_name}\./, '')}
           items = items.map{|item| Hash[columns.zip(item)]}
         end
