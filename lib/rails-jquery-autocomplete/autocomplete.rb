@@ -97,9 +97,9 @@ module RailsJQueryAutocomplete
     # Hash also includes a key/value pair for each method in extra_data
     #
     def json_for_autocomplete(items, method, extra_data=[])
-      if items.first && items.first.kind_of?(Hash)
+      if items.first && items.first.is_a?(Hash)
         items.each do |item|
-          item['label'] = item['value'] = item[method.to_s]
+          item["label"] = item["value"] = item[method.to_s]
         end
       else
         items = items.collect do |item|
