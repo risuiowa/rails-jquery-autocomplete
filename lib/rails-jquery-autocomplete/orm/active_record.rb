@@ -24,12 +24,19 @@ module RailsJQueryAutocomplete
 
         items = (::Rails::VERSION::MAJOR * 10 + ::Rails::VERSION::MINOR) >= 40 ? model.where(nil) : model.scoped
 
-        scopes.each { |scope| items = items.send(scope) } unless scopes.empty?
-
         items = items.select(get_autocomplete_select_clause(model, method, options)) unless options[:full_model]
         items = items.where(get_autocomplete_where_clause(model, term, method, options)).
             limit(limit).order(order)
         items = items.where(where) unless where.blank?
+
+        scopes.each do |scope|
+          items = case scope
+                  when String
+                    items.send(scope)
+                  when Proc
+                    items.instance_exec(&scope)
+                  end
+        end
 
         items
       end
