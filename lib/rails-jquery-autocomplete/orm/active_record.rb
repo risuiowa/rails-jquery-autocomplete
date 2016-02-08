@@ -35,7 +35,7 @@ module RailsJQueryAutocomplete
             limit(limit).order(order)
         items = items.where(where) unless where.blank?
         if select_method == :pluck
-          columns = get_autocomplete_select_clause(model, method, options)
+          columns = get_autocomplete_select_clause(model, method, options).uniq
           items = items.pluck(*columns)
           columns = columns.map do |column|
             column.sub(/^#{model.table_name}\./, "")

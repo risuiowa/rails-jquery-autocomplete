@@ -98,6 +98,7 @@ module RailsJQueryAutocomplete
     #
     def json_for_autocomplete(items, method, extra_data=[])
       if items.first && items.first.is_a?(Hash)
+        # Query was a "pluck" and items are already hashes
         items.each do |item|
           item["label"] = item["value"] = item[method.to_s]
         end
