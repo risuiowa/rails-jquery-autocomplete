@@ -53,12 +53,13 @@ module RailsJQueryAutocomplete
         is_case_sensitive_search = options[:case_sensitive]
         like_clause = (postgres?(model) && !is_case_sensitive_search ? 'ILIKE' : 'LIKE')
         column_transform = is_case_sensitive_search ? '' : 'LOWER'
+        term = "#{(is_full_search ? '%' : '')}#{term.gsub(/([_%\\])/, '\\\\\1')}%"
         if options[:hstore]
-          ["#{column_transform}(#{table_name}.#{method} -> '#{options[:hstore][:key]}') LIKE #{column_transform}(?)", "#{(is_full_search ? '%' : '')}#{term}%"]
+          ["#{column_transform}(#{table_name}.#{method} -> '#{options[:hstore][:key]}') LIKE #{column_transform}(?)", term]
         elsif sqlite?
-          ["#{column_transform}(#{method}) #{like_clause} #{column_transform}(?)", "#{(is_full_search ? '%' : '')}#{term}%"]
+          ["#{column_transform}(#{method}) #{like_clause} #{column_transform}(?)", term]
         else
-          ["#{column_transform}(#{table_name}.#{method}) #{like_clause} #{column_transform}(?)", "#{(is_full_search ? '%' : '')}#{term}%"]
+          ["#{column_transform}(#{table_name}.#{method}) #{like_clause} #{column_transform}(?)", term]
         end
       end
 
