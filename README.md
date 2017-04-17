@@ -95,7 +95,7 @@ A live demo can be seen
 
 As a new developer, I had some issues getting this to work by following the documentation. However after trying some things and reading [Yoni Weisbrod](http://www.yoniweisbrod.com/autocomplete-magic-with-rails/)'s blog post, I was able to make the autocomplete work and implement a few useful features.
 
-##Some implemented features
+## Some implemented features
 
 1. The css has been changed such that the results show up better against the box of suggestions. See  `<app/assets/stylesheets/food.scss>` for details. I obtained this from a gist(forgive me I don't remember who the author is at the moment, please contact me if you do and I'll give credit). Upon mouseover/arrowkey presses, the selection will be highlighted.
 
