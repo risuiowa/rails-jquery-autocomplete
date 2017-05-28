@@ -20,15 +20,24 @@ module RailsJQueryAutocomplete
         scopes  = Array(options[:scopes])
         where   = options[:where]
         limit   = get_autocomplete_limit(options)
-        order   = active_record_get_autocomplete_order(method, options, model)
+        order   = Array.new
 
         items = (::Rails::VERSION::MAJOR * 10 + ::Rails::VERSION::MINOR) >= 40 ? model.where(nil) : model.scoped
 
         scopes.each { |scope| items = items.send(scope) } unless scopes.empty?
 
         items = items.select(get_autocomplete_select_clause(model, method, options)) unless options[:full_model]
-        items = items.where(get_autocomplete_where_clause(model, term, method, options)).
-            limit(limit).order(order)
+
+        clauses = []
+        conditions = []
+        param_to_array(method).each do |method|
+          c = get_autocomplete_where_clause(model, term, method, options)
+          clauses << c[0]
+          conditions << c[1]
+          order << active_record_get_autocomplete_order(method, options, model)
+        end
+
+        items = items.where(clauses.join(' OR '), *conditions).limit(limit).order(order.join(', '))
         items = items.where(where) unless where.blank?
 
         items
@@ -43,7 +52,11 @@ module RailsJQueryAutocomplete
             ] + (options[:extra_data].blank? ? [] : options[:extra_data]))
         else
           table_name = model.table_name
-          (["#{table_name}.#{model.primary_key}", "#{table_name}.#{method}"] + (options[:extra_data].blank? ? [] : options[:extra_data]))
+          l = ["#{table_name}.#{model.primary_key}"]
+          param_to_array(method).each do |method|
+            l << "#{table_name}.#{method}"
+          end
+          (l + (options[:extra_data].blank? ? [] : options[:extra_data]))
         end
       end
 
@@ -77,6 +90,11 @@ module RailsJQueryAutocomplete
         def postgres?(model)
           # Figure out if this particular model uses the PostgreSQL adapter
           model.connection.class.to_s.match(/PostgreSQLAdapter/)
+        end
+
+        def param_to_array(s)
+          return s if s.kind_of?(Array)
+          return [s]
         end
     end
   end
