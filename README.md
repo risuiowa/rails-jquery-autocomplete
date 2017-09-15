@@ -80,7 +80,7 @@ Just add it to your app/assets/javascripts/application.js file
 
     //= require jquery
     //= require jquery_ujs
-    //= require jquery-ui/autocomplete
+    //= require jquery-ui/widgets/autocomplete
     //= require autocomplete-rails
 
 ## Usage
