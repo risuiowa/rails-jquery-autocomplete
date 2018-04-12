@@ -16,7 +16,7 @@ require 'rails/all'
 require 'mongoid'
 require 'mongo_mapper'
 require 'shoulda'
-require 'rr'
+require 'test/unit/rr'
 require 'rails/test_help'
 require 'rails-jquery-autocomplete'
 
