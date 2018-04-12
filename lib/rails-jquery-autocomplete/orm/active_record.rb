@@ -10,7 +10,7 @@ module RailsJQueryAutocomplete
         else
           order || "LOWER(#{table_prefix}#{method}) ASC"
         end
-      
+
         Arel.sql(sql)
       end
 
