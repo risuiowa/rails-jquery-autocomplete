@@ -11,6 +11,7 @@ module Rails
   end
 end
 
+require 'minitest/autorun'
 require 'rails/all'
 require 'mongoid'
 require 'mongo_mapper'
