@@ -5,11 +5,13 @@ module RailsJQueryAutocomplete
         order = options[:order]
 
         table_prefix = model ? "#{model.table_name}." : ""
-        if sqlite?
+        sql = if sqlite?
           order || "LOWER(#{method}) ASC"
         else
           order || "LOWER(#{table_prefix}#{method}) ASC"
         end
+      
+        Arel.sql(sql)
       end
 
       def active_record_get_autocomplete_items(parameters)
