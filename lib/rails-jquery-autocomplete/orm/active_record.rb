@@ -26,27 +26,42 @@ module RailsJQueryAutocomplete
 
         items = (::Rails::VERSION::MAJOR * 10 + ::Rails::VERSION::MINOR) >= 40 ? model.where(nil) : model.scoped
 
-        scopes.each { |scope| items = items.send(scope) } unless scopes.empty?
-
         items = items.select(get_autocomplete_select_clause(model, method, options)) unless options[:full_model]
         items = items.where(get_autocomplete_where_clause(model, term, method, options)).
             limit(limit).order(order)
         items = items.where(where) unless where.blank?
 
+        if options[:unique]
+          scopes << lambda do
+            select = "MIN(#{model.primary_key}) as #{model.primary_key}, #{method}"
+            unscope(:select).select(select).group(method)
+          end
+        end
+
+        scopes.each do |scope|
+          items = case scope
+                  when String
+                    items.send(scope)
+                  when Proc
+                    items.instance_exec(&scope)
+                  end
+        end
+
         items
       end
 
       def get_autocomplete_select_clause(model, method, options)
-        if sqlite?
+        base = if sqlite?
           table_name = model.quoted_table_name
-          ([
-              "#{table_name}.#{model.connection.quote_column_name(model.primary_key)} as #{model.primary_key}",
-              "#{table_name}.#{model.connection.quote_column_name(method)} as #{method}"
-            ] + (options[:extra_data].blank? ? [] : options[:extra_data]))
+          [
+            "#{table_name}.#{model.connection.quote_column_name(model.primary_key)} as #{model.primary_key}",
+            "#{table_name}.#{model.connection.quote_column_name(method)} as #{method}"
+          ]
         else
           table_name = model.table_name
-          (["#{table_name}.#{model.primary_key}", "#{table_name}.#{method}"] + (options[:extra_data].blank? ? [] : options[:extra_data]))
+          ["#{table_name}.#{model.primary_key}", "#{table_name}.#{method}"]
         end
+        base + (options[:extra_data] || [])
       end
 
       def get_autocomplete_where_clause(model, term, method, options)
