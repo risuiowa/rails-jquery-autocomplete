@@ -276,7 +276,7 @@ To configure the behaviour if no matches are found, you can set the following op
 These will change the behaviour globally. To set them on a single input field use:
 
     f.autocomplete_field :brand_names, autocomplete_brand_name_products_path,
-    'data-showNoMatches' => false
+    'data-show-no-matches' => false
     #or
     f.autocomplete_field :brand_names, autocomplete_brand_name_products_path,
     'data-noMatchesLabel' => 'no brands found'
