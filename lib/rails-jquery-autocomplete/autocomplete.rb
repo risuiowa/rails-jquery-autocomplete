@@ -97,13 +97,20 @@ module RailsJQueryAutocomplete
     # Hash also includes a key/value pair for each method in extra_data
     #
     def json_for_autocomplete(items, method, extra_data=[])
-      items = items.collect do |item|
-        hash = HashWithIndifferentAccess.new({"id" => item.id.to_s, "label" => item.send(method), "value" => item.send(method)})
-        extra_data.each do |datum|
-          hash[datum] = item.send(datum)
-        end if extra_data
-        # TODO: Come back to remove this if clause when test suite is better
-        hash
+      if items.first && items.first.is_a?(Hash)
+        # Query was a "pluck" and items are already hashes
+        items.each do |item|
+          item["label"] = item["value"] = item[method.to_s]
+        end
+      else
+        items = items.collect do |item|
+          hash = HashWithIndifferentAccess.new({"id" => item.id.to_s, "label" => item.send(method), "value" => item.send(method)})
+          extra_data.each do |datum|
+            hash[datum] = item.send(datum)
+          end if extra_data
+          # TODO: Come back to remove this if clause when test suite is better
+          hash
+        end
       end
       if block_given?
         yield(items)

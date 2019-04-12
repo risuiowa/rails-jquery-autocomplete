@@ -54,6 +54,7 @@ module RailsJQueryAutocomplete
       should 'parse items to JSON' do
         item = mock(Object)
         mock(item).send(:name).times(2) { 'Object Name' }
+        stub(item).is_a?(Hash) { false }
         mock(item).id { 1 }
         items    = [item]
         response = self.json_for_autocomplete(items, :name).first
@@ -65,6 +66,7 @@ module RailsJQueryAutocomplete
       should 'return an instance of HashWithIndifferentAccess' do
         item = mock(Object)
         mock(item).send(:name).times(2) { 'Object Name' }
+        stub(item).is_a?(Hash) { false }
         mock(item).id { 1 }
         items    = [item]
         response = self.json_for_autocomplete(items, :name).first
@@ -77,6 +79,7 @@ module RailsJQueryAutocomplete
         should 'add that extra data to result' do
           item = mock(Object)
           mock(item).send(:name).times(2) { 'Object Name' }
+          stub(item).is_a?(Hash) { false }
           mock(item).id { 1 }
           mock(item).send("extra") { 'Object Extra ' }
 

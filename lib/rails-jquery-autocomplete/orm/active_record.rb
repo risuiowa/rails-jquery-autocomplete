@@ -28,11 +28,22 @@ module RailsJQueryAutocomplete
 
         scopes.each { |scope| items = items.send(scope) } unless scopes.empty?
 
-        items = items.select(get_autocomplete_select_clause(model, method, options)) unless options[:full_model]
+        select_method = options[:select_method] || :select
+
+        if select_method == :select
+          items = items.select(get_autocomplete_select_clause(model, method, options)) unless options[:full_model]
+        end
         items = items.where(get_autocomplete_where_clause(model, term, method, options)).
             limit(limit).order(order)
         items = items.where(where) unless where.blank?
-
+        if select_method == :pluck
+          columns = get_autocomplete_select_clause(model, method, options).uniq
+          items = items.pluck(*columns)
+          columns = columns.map do |column|
+            column.sub(/^#{model.table_name}\./, "")
+          end
+          items = items.map { |item| Hash[columns.zip(item)] }
+        end
         items
       end
 
