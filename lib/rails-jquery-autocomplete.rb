@@ -10,8 +10,15 @@ module RailsJQueryAutocomplete
   end
 end
 
-class ActionController::Base
-  include RailsJQueryAutocomplete::Autocomplete
+if Rails::VERSION::MAJOR >= 6
+  ActiveSupport.on_load(:action_controller_base) do
+    ActionController::Base.send(
+      :include,
+      RailsJQueryAutocomplete::Autocomplete
+    )
+  end
+else
+  ActionController::Base.send(:include, RailsJQueryAutocomplete::Autocomplete)
 end
 
 require 'rails-jquery-autocomplete/formtastic'
